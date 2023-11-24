@@ -12,6 +12,7 @@ body {
   font-size: 12px;
   font-weight: 500;
   border-style: hidden;
+  vertical-align: baseline;
 }
 
 
@@ -32,10 +33,37 @@ table th:first-child{
   border-radius:15px 0 0 15px;
 }
 
+table {
+  table-layout: fixed;
+}
+
+
 table th:last-child{
   border-radius:0 15px 15px 0;
 }
 
 tbody tr:first-child {
   border-style: none;
+}
+
+#all_table {
+  vertical-align: baseline;
+  th {
+    padding: 22px 15px;
+    border: 1px solid #E5E8EF;
+  }
+  td {
+    padding: 22px 0px;
+  }
+}
+
+.up_link {
+  margin-bottom: -10px;
+}
+
+.last_th_el {
+  margin-left: auto;
+  text-align: right;
+  border-radius: 6px;
+  background: var(--White, #FFF);
 }
