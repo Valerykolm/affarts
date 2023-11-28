@@ -1,8 +1,14 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col">Menu</div>
-      <div class="col">Login</div>
+      <add-employee-button
+        @add-employee-button="showForm = true"
+        class="add-employee"
+        :disabled="tooManyUsersAdded"
+      />
+      <div v-if="showForm" class="form_mask">
+        <add-new-employee @add-employee="add" />
+      </div>
     </div>
     <div class="row-auto user_table">
       <div class="col-md-auto">
@@ -36,7 +42,7 @@
                   Business Name
                   <div class="ps-2">
                     <div class="up_link">
-                      <a href="#">
+                      <a href="">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="8"
@@ -73,26 +79,7 @@
               <th scope="col">
                 <div class="d-flex align-items-center">
                   <a href="#">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="21"
-                      height="20"
-                      viewBox="0 0 21 20"
-                      fill="none"
-                    >
-                      <path
-                        d="M6.80951 6.66666L13.4762 13.3333"
-                        stroke="#8591AE"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M13.4762 6.66666L6.80951 13.3333"
-                        stroke="#8591AE"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
+                    <closed-sign />
                   </a>
                   Team
                   <div class="ps-2">
@@ -152,26 +139,7 @@
               <th scope="col">
                 <div class="d-flex align-items-center">
                   <a href="#">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="21"
-                      height="20"
-                      viewBox="0 0 21 20"
-                      fill="none"
-                    >
-                      <path
-                        d="M6.80951 6.66666L13.4762 13.3333"
-                        stroke="#8591AE"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M13.4762 6.66666L6.80951 13.3333"
-                        stroke="#8591AE"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
+                    <closed-sign />
                   </a>
                   Role
                   <div class="ps-2">
@@ -292,26 +260,7 @@
               <th scope="col">
                 <div class="d-flex align-items-center">
                   <a href="#">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="21"
-                      height="20"
-                      viewBox="0 0 21 20"
-                      fill="none"
-                    >
-                      <path
-                        d="M6.80951 6.66666L13.4762 13.3333"
-                        stroke="#8591AE"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M13.4762 6.66666L6.80951 13.3333"
-                        stroke="#8591AE"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
+                    <closed-sign />
                   </a>
                   Birthday
                   <div class="ps-1">
@@ -518,12 +467,32 @@
 </template>
 
 <script>
+import AddNewEmployee from "./components/AddNewEmployee.vue";
+import ClosedSign from "./components/ClosedSign.vue";
+import AddEmployeeButton from "./components/AddEmployeeButton.vue";
+
 export default {
   name: "App",
+
+  components: {
+    ClosedSign,
+    AddNewEmployee,
+    AddEmployeeButton,
+  },
+
   data() {
     return {
       number: 1,
       selectedUser: null,
+      showForm: false,
+      name: "",
+      team: "",
+      role: "",
+      gmail: "",
+      birthday: "",
+      telegram: "",
+      lastLogin: "",
+      userPermision: "",
       users: [
         {
           name: "Sarah Conor",
@@ -536,31 +505,57 @@ export default {
           userPermision: "",
         },
         {
-          name: "Sarah Conor",
-          team: "Crosty",
-          role: "TeamLead",
-          gmail: "sarahconnor@gmail.com",
-          birthday: "25.04.1994",
-          telegram: "@sarahconnor",
-          lastLogin: "03.11.2021",
+          name: "Arnold Brown",
+          team: "Gunters",
+          role: "Seo Specialist",
+          gmail: "arnoldbrown@gmail.com",
+          birthday: "12.04.1989",
+          telegram: "@arnoldbrown",
+          lastLogin: "02.11.2021",
           userPermision: "",
         },
         {
-          name: "Sarah Conor",
-          team: "Crosty",
-          role: "TeamLead",
-          gmail: "sarahconnor@gmail.com",
-          birthday: "25.04.1994",
-          telegram: "@sarahconnor",
+          name: "Ernest Eberly",
+          team: "Flamethrower",
+          role: "Semantic Specialist",
+          gmail: "ernesteberly@gmail.com",
+          birthday: "17.06.1993",
+          telegram: "@ErnestEberly",
           lastLogin: "03.11.2021",
           userPermision: "",
         },
       ],
     };
   },
+
+  computed: {
+    tooManyUsersAdded() {
+      return this.users.length > 4;
+    },
+  },
+
   methods: {
+    add(newUser) {
+      this.users.push(newUser);
+
+      this.cleanForm();
+    },
+
+    cleanForm() {
+      this.name = "";
+      this.team = "";
+      this.role = "";
+      this.gmail = "";
+      this.birthday = "";
+      this.telegram = "";
+      this.lastLogin = "";
+      this.userPermision = "";
+
+      this.showForm = false;
+    },
+
     handleDelete(userToRemove) {
-      this.user = this.users.filter((u) => u !== userToRemove);
+      this.users = this.users.filter((u) => u !== userToRemove);
     },
   },
 };
